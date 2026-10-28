@@ -1,0 +1,63 @@
+function analyzeText(rawText) {
+        const text = rawText.toLowerCase();
+        let warnings = [];
+
+        // 1. Sugar & Sweeteners
+        if (text.includes("sugar") || text.includes("syrup") || text.includes("fructose") || text.includes("maltodextrin")) {
+            warnings.push("🍬 <b>High Sugar/Sweeteners:</b> Detected sugar or high-glycemic syrups.");
+        }
+
+        // 2. Trans Fats
+        if (text.includes("trans fat") || text.includes("hydrogenated") || text.includes("shortening")) {
+            warnings.push("🚫 <b>Trans Fats:</b> Contains hydrogenated oils (unhealthy for heart).");
+        }
+
+        // 3. Artificial Colors
+        const colorList = ["red 40", "yellow 5", "yellow 6", "blue 1", "blue 2", "allura", "tartrazine", "sunset yellow"];
+        let foundColors = colorList.filter(color => text.includes(color));
+        if (foundColors.length > 0) {
+            warnings.push(`🎨 <b>Artificial Colors:</b> Found ${foundColors.join(", ")}.`);
+        }
+
+        // 4. Preservatives/Sodium
+        if (text.includes("sodium") || text.includes("benzoate") || text.includes("nitrite")) {
+            warnings.push("🧂 <b>Preservatives/Sodium:</b> High salt or chemical preservatives detected.");
+        }
+
+        // Output formatting
+        let output = `<b>Extracted Text Preview:</b> <br><small>${rawText.substring(0, 100)}...</small><hr>`;
+        
+        if (warnings.length > 0) {
+            output += warnings.map(w => `<span class="warning-item">${w}</span>`).join("");
+        } else {
+            output += `<p class="safe-msg">✔ Basic scan looks clean! No common red-flag ingredients found.</p>`;
+        }
+
+        result.innerHTML = output;
+    }
+
+
+
+
+
+    function submitFeedback() {
+        const rating = document.querySelector('input[name="rating"]:checked');
+        const comment = document.getElementById('comment').value;
+
+        if (!rating) {
+            alert("Please select a star rating.");
+            return;
+        }
+
+        // Logic to "Save" the feedback
+        console.log("Feedback Received:", {
+            stars: rating.value,
+            comment: comment
+        });
+
+        // Show success and redirect back home
+        document.getElementById('thank-you-msg').style.display = 'block';
+        setTimeout(() => {
+            window.location.href = "index.html";
+        }, 2000);
+    }
